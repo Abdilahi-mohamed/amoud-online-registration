@@ -31,14 +31,6 @@ api.interceptors.request.use(async (config) => {
 // ─── Auth Endpoints ────────────────────────────────────────────────────────────
 
 /**
- * Register a new user
- * @param {string} username
- * @param {string} password
- */
-export const registerUser = (username, password) =>
-    api.post('/auth/register', { username, password });
-
-/**
  * Login an existing user
  * @param {string} username
  * @param {string} password

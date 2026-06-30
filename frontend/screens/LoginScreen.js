@@ -58,12 +58,6 @@ export default function LoginScreen({ navigation }) {
                     <Text className="text-white font-bold text-lg">Login</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    className="mt-4 border border-blue-600 p-4 rounded-xl items-center"
-                    onPress={() => navigation.navigate('Register')}
-                >
-                    <Text className="text-blue-600 font-bold text-lg">Create a New Account</Text>
-                </TouchableOpacity>
             </View>
         </View>
     );

@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
 
 import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
 import ExcelLoginScreen from './screens/ExcelLoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import SemesterRegistrationScreen from './screens/SemesterRegistrationScreen';
@@ -55,7 +54,6 @@ export default function App() {
             >
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="ExcelLogin" component={ExcelLoginScreen} />
-                <Stack.Screen name="Register" component={RegisterScreen} />
                 <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 <Stack.Screen name="SemesterRegistration" component={SemesterRegistrationScreen} />
                 <Stack.Screen name="FeePayment" component={FeePaymentScreen} />

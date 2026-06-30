@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loginUser, registerUser } from '../api';
+import { loginUser } from '../api';
 
 export default function LoginScreen({ navigation }) {
-    const [mode, setMode] = useState('login'); // 'login' or 'signup'
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleLogin = async () => {
@@ -39,30 +37,9 @@ export default function LoginScreen({ navigation }) {
         }
     };
 
-    const handleSignUp = async () => {
-        if (!username || !password || !confirmPassword) {
-            return Alert.alert('Error', 'Please fill all fields');
-        }
-        if (password !== confirmPassword) {
-            return Alert.alert('Error', 'Passwords do not match');
-        }
-
-        setLoading(true);
-        try {
-            const res = await registerUser(username, password, 'admin');
-            Alert.alert('Success', res.data?.message || 'Admin account created. Logging in...');
-            await handleLogin();
-        } catch (error) {
-            Alert.alert('Sign Up Failed', error.response?.data?.message || error.message || 'Something went wrong');
-            setLoading(false);
-        }
-    };
-
-    const submit = mode === 'login' ? handleLogin : handleSignUp;
-
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{mode === 'login' ? 'Admin Login' : 'Admin Sign Up'}</Text>
+            <Text style={styles.title}>Admin Login</Text>
 
             <TextInput
                 style={styles.input}
@@ -80,24 +57,8 @@ export default function LoginScreen({ navigation }) {
                 secureTextEntry
             />
 
-            {mode === 'signup' && (
-                <TextInput
-                    style={styles.input}
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    secureTextEntry
-                />
-            )}
-
-            <TouchableOpacity style={styles.button} onPress={submit} disabled={loading}>
-                <Text style={styles.buttonText}>{loading ? (mode === 'login' ? 'Logging in...' : 'Signing up...') : (mode === 'login' ? 'Login' : 'Sign Up')}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => setMode(mode === 'login' ? 'signup' : 'login')}>
-                <Text style={styles.switchText}>
-                    {mode === 'login' ? 'Create an admin account' : 'Already registered? Login'}
-                </Text>
+            <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+                <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Login'}</Text>
             </TouchableOpacity>
         </View>
     );

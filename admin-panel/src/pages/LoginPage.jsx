@@ -1,36 +1,26 @@
 import React, { useState } from 'react';
-import { loginUser, registerAdmin } from '../api';
-import { GraduationCap, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
+import { loginUser } from '../api';
+import { GraduationCap, Lock, User, AlertCircle } from 'lucide-react';
 
 const LoginPage = ({ onLogin }) => {
-  const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setSuccess('');
 
     try {
-      if (isRegistering) {
-        await registerAdmin(username, password);
-        setSuccess('Admin registered successfully! You can now log in.');
-        setIsRegistering(false);
-        setPassword('');
-      } else {
-        const response = await loginUser(username, password);
-        if (response.data.role !== 'admin') {
-          throw new Error('Access denied. Admin only.');
-        }
-        onLogin(response.data.token);
+      const response = await loginUser(username, password);
+      if (response.data.role !== 'admin') {
+        throw new Error('Access denied. Admin only.');
       }
+      onLogin(response.data.token);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || (isRegistering ? 'Registration failed' : 'Login failed'));
+      setError(err.response?.data?.message || err.message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -44,20 +34,13 @@ const LoginPage = ({ onLogin }) => {
             <GraduationCap size={32} />
           </div>
           <h1>UniReg Admin</h1>
-          <p>{isRegistering ? 'Create new admin account' : 'Login to manage student registrations'}</p>
+          <p>Login to manage student registrations</p>
         </div>
 
         {error && (
           <div className="error-alert">
             <AlertCircle size={18} />
             <span>{error}</span>
-          </div>
-        )}
-
-        {success && (
-          <div className="success-alert">
-            <CheckCircle size={18} />
-            <span>{success}</span>
           </div>
         )}
 
@@ -91,22 +74,8 @@ const LoginPage = ({ onLogin }) => {
           </div>
 
           <button type="submit" className="btn btn-primary w-full py-3" disabled={loading}>
-            {loading ? (isRegistering ? 'Registering...' : 'Signing in...') : (isRegistering ? 'Register' : 'Sign In')}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
-          
-          <div className="toggle-view">
-            <button 
-              type="button" 
-              className="toggle-btn"
-              onClick={() => {
-                setIsRegistering(!isRegistering);
-                setError('');
-                setSuccess('');
-              }}
-            >
-              {isRegistering ? 'Already have an account? Sign In' : 'Need an admin account? Register'}
-            </button>
-          </div>
         </form>
       </div>
 

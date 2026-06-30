@@ -30,9 +30,6 @@ api.interceptors.request.use(async (config) => {
  * @param {string} username
  * @param {string} password
  */
-export const registerUser = (username, password, role='admin') =>
-    api.post('/auth/register', { username, password, role });
-
 export const loginUser = (username, password) =>
     api.post('/auth/login', { username, password });
 

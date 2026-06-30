@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // The address were the backend is running
-export const BASE_URL = 'http://localhost:5000/api';
+export const BASE_URL = 'https://amoud-online-registration-backend-2.onrender.com/api';
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -22,9 +22,6 @@ api.interceptors.request.use((config) => {
 // ─── Auth Endpoints ────────────────────────────────────────────────────────────
 export const loginUser = (username, password) =>
     api.post('/auth/login', { username, password });
-
-export const registerAdmin = (username, password) =>
-    api.post('/auth/register', { username, password, role: 'admin' });
 
 // ─── Admin Endpoints ───────────────────────────────────────────────────────────
 export const getAdminDashboard = () =>
